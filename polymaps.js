@@ -500,22 +500,17 @@ po.map = function() {
 
   map.mouse = function(e) {
     var point = (container.ownerSVGElement || container).createSVGPoint();
-    if ((bug44083 < 0) && (window.scrollX || window.scrollY)) {
-      var svg = document.body.appendChild(po.svg("svg"));
-      svg.style.position = "absolute";
-      svg.style.top = svg.style.left = "0px";
-      var ctm = svg.getScreenCTM();
-      bug44083 = !(ctm.f || ctm.e);
-      document.body.removeChild(svg);
-    }
-    if (bug44083) {
-      point.x = e.pageX;
-      point.y = e.pageY;
-    } else {
-      point.x = e.clientX;
-      point.y = e.clientY;
-    }
-    return point.matrixTransform(container.getScreenCTM().inverse());
+    point.x = e.clientX;
+    point.y = e.clientY;
+    //Firefox (as of version 28) calculates bounding boxes for
+    //svg elements wrong when css transformation are present.
+    //Calculating works however for normal html elements, thus
+    //use the parent div for calculation.
+    var rect = container.parentElement.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left - container.clientLeft,
+      y: e.clientY - rect.top - container.clientTop
+    };
   };
 
   map.size = function(x) {
@@ -714,11 +709,7 @@ po.map.coordinateLocation = function(c) {
     lon: k * c.column - 180,
     lat: y2lat(180 - k * c.row)
   };
-};
-
-// https://bugs.webkit.org/show_bug.cgi?id=44083
-var bug44083 = /WebKit/.test(navigator.userAgent) ? -1 : 0;
-po.layer = function(load, unload) {
+};po.layer = function(load, unload) {
   var layer = {},
       cache = layer.cache = po.cache(load, unload).size(512),
       tile = true,

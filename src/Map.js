@@ -128,7 +128,15 @@ po.map = function() {
     var point = (container.ownerSVGElement || container).createSVGPoint();
     point.x = e.clientX;
     point.y = e.clientY;
-    return point.matrixTransform(container.getScreenCTM().inverse());
+    //Firefox (as of version 28) calculates bounding boxes for
+    //svg elements wrong when css transformation are present.
+    //Calculating works however for normal html elements, thus
+    //use the parent div for calculation.
+    var rect = container.parentElement.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left - container.clientLeft,
+      y: e.clientY - rect.top - container.clientTop
+    };
   };
 
   map.size = function(x) {
