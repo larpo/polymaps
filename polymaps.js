@@ -2,7 +2,7 @@ if (!org) var org = {};
 if (!org.polymaps) org.polymaps = {};
 (function(po){
 
-  po.version = "2.5.1"; // semver.org
+  po.version = "2.5.2"; // semver.org
 
   var zero = {x: 0, y: 0};
 po.ns = {
@@ -1326,7 +1326,7 @@ po.geoJson = function(fetch) {
     MultiPoint: function (o, e, k) {
       var c = o.coordinates,
           i = -1,
-          n = p.length,
+          n = c.length,
           x = e.firstChild,
           p;
       while (++i < n) {
@@ -2407,3 +2407,5 @@ po.stylist = function() {
   return stylist;
 };
 })(org.polymaps);
+
+module.exports = org.polymaps;
