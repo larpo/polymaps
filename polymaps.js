@@ -500,7 +500,8 @@ po.map = function() {
 
   map.mouse = function(e) {
     //IE doesn't have parent element attached to top level svg element,
-    //so we have to use this hack, which in turn doesn't work on firefox.
+    //so we have to use this hack, but only for IE since it wont work
+    // correctly on some other browsers (firefox).
     if (!container.parentElement) {
       var point = (container.ownerSVGElement || container).createSVGPoint();
       point.x = e.clientX;
