@@ -44,3 +44,10 @@ polymaps.js: $(JS_FILES) Makefile
 
 clean:
 	rm -rf polymaps.js polymaps.min.js
+
+docker:
+	docker build -t polymaps --rm .
+	docker run -ti --name polymaps-build polymaps
+	docker cp polymaps-build:/usr/src/polymaps/polymaps.js .
+	docker cp polymaps-build:/usr/src/polymaps/polymaps.min.js .
+	docker rm -v polymaps-build

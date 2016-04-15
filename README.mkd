@@ -1,5 +1,5 @@
-# Polymaps
 
+# Polymaps
 Polymaps is a free JavaScript library for making dynamic, interactive maps in
 modern web browsers. See <http://polymaps.org> for more details.
 
@@ -38,28 +38,19 @@ to send GitHub messages or tweets to `mbostock`.
 
 ## Build Instructions
 
-You do not need to build Polymaps in order to view the examples; a compiled
-copy of Polymaps (`polymaps.js` and `polymaps.min.js`) is included in the
-repository.
+Run 
+```
+$ make docker
+```
 
-To edit and build a new version of Polymaps, you must first install Java and
-GNU Make. If you are on Mac OS X, you can install Make as part of the UNIX
-tools included with
-[XCode](http://developer.apple.com/technologies/xcode.html). Once you've setup
-your development environment, you can rebuild Polymaps by running the
-following command from the repo's root directory:
+... or manually
 
-    make
+```
+$ docker build -t polymaps --rm .
+$ docker run -ti --name polymaps-build polymaps
+$ docker cp polymaps-build:/usr/src/polymaps/polymaps.js .
+$ docker cp polymaps-build:/usr/src/polymaps/polymaps.min.js .
 
-The Polymaps build process is exceptionally simple. First, all the JavaScript
-files are concatenated (using `cat`); the order of files is important to
-preserve dependencies. This produces the file `polymaps.js`. Second, this file
-is put through Google's [Closure
-Compiler](http://code.google.com/closure/compiler/) to minify the JavaScript,
-resulting in a smaller `polymaps.min.js`.
+$ docker rm -v polymaps-build
 
-If you are doing development, it is highly recommended that you use the
-non-minified JavaScript for easier debugging. The minified JavaScript is only
-intended for production, where file size matters. Note that the development
-version is marked as read-only so that you don't accidentally overwrite your
-edits after a re-build.
+```
