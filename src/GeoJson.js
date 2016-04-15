@@ -174,7 +174,7 @@ po.geoJson = function(fetch) {
     MultiPoint: function (o, e, k) {
       var c = o.coordinates,
           i = -1,
-          n = p.length,
+          n = c.length,
           x = e.firstChild,
           p;
       while (++i < n) {
